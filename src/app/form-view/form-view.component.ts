@@ -15,7 +15,7 @@ export class FormViewComponent implements OnInit {
   public isCocNumberValid = false;
   public isVatNumberValid = false;
   @ViewChild(AutoFillButtonComponent)
-  autoFillButtonComponent!: AutoFillButtonComponent;
+  private autoFillButtonComponent!: AutoFillButtonComponent;
 
   constructor(
     private http: HttpClient,
@@ -54,7 +54,7 @@ export class FormViewComponent implements OnInit {
     }
   }
 
-  public validateCocNumber(cocNumber: string): void {
+  private validateCocNumber(cocNumber: string): void {
     const apiUrl = `${ environment.kvkUrl }${ cocNumber }`;
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -82,7 +82,7 @@ export class FormViewComponent implements OnInit {
     });
   }
 
-  public validateVatNumber(vatNumber: string): void {
+  private validateVatNumber(vatNumber: string): void {
     const apiUrl = `${ environment.btwUrl }${ vatNumber }.json`
 
     this.http.get(apiUrl).subscribe((response: any) => {
