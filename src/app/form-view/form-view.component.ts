@@ -39,14 +39,19 @@ export class FormViewComponent implements OnInit {
     this.validateCocNumber(this.form.controls['cocNumber'].value);
     this.validateVatNumber(this.form.controls['vatNumber'].value);
 
-    if (this.form.valid && !this.isVatNumberValid && !this.isCocNumberValid) {
+    if (this.form.valid && (this.isVatNumberValid && this.isCocNumberValid)) {
+      this.toastr.success('Form is applied and saved!', 'Succes');
+      this.autoFillButtonComponent.isAutoFilled = false;
+      this.form.reset();
+
       this.isCocNumberValid = false;
       this.isVatNumberValid = false;
+    } else {
+      this.toastr.error(
+        'Something went wrong, are you sure everything is as it supposed to be?',
+        'Form is incorrect'
+      )
     }
-
-    this.toastr.success('Formulier is ingediend!', 'Succes');
-    this.autoFillButtonComponent.isAutoFilled = false;
-    this.form.reset();
   }
 
   public validateCocNumber(cocNumber: string): void {
@@ -61,7 +66,8 @@ export class FormViewComponent implements OnInit {
 
         const found = response.some((item: any) => {
           if (cocNumber == item['kvknummer']) {
-            this.isCocNumberValid = true;
+            this.isCocNumberValid = cocNumber == item['kvknummer'];
+            // console.log(this.isCocNumberValid);
 
             this.toastr.info("Coc number is found!", 'Validity of Coc number');
             return this.isCocNumberValid;
@@ -80,7 +86,8 @@ export class FormViewComponent implements OnInit {
     const apiUrl = `${ environment.btwUrl }${ vatNumber }.json`
 
     this.http.get(apiUrl).subscribe((response: any) => {
-      this.isVatNumberValid = response.hasOwnProperty('valid') && response.valid;
+      this.isVatNumberValid = response.valid;
+
       this.isVatNumberValid ? this.toastr.info('Valid VAT number', 'Validity of VAT') :
         this.toastr.error('Invalid VAT number', 'Validity of VAT');
     });
