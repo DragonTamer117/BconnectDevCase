@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { environmentProd } from "../../environments/environment.prod";
 import { AutoFillButtonComponent } from "./auto-fill-button/auto-fill-button.component";
 import { ToastrService } from "ngx-toastr";
+import { environment } from "../../environments/environment";
 
 @Component({
   selector: 'app-form-view',
@@ -50,10 +50,10 @@ export class FormViewComponent implements OnInit {
   }
 
   public validateCocNumber(cocNumber: string): void {
-    const apiUrl = `${ environmentProd.kvkUrl }${ cocNumber }`;
+    const apiUrl = `${ environment.kvkUrl }${ cocNumber }`;
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'ovio-api-key': environmentProd.OPENKVK_OVERHEID_API_KEY
+      'ovio-api-key': environment.OPENKVK_OVERHEID_API_KEY
     });
 
     this.http.get(apiUrl, { headers }).subscribe(
@@ -77,7 +77,7 @@ export class FormViewComponent implements OnInit {
   }
 
   public validateVatNumber(vatNumber: string): void {
-    const apiUrl = `${ environmentProd.btwUrl }${ vatNumber }.json`
+    const apiUrl = `${ environment.btwUrl }${ vatNumber }.json`
 
     this.http.get(apiUrl).subscribe((response: any) => {
       this.isVatNumberValid = response.hasOwnProperty('valid') && response.valid;
