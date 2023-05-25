@@ -11,7 +11,7 @@ export class AutoFillButtonComponent {
   @Input()
   public form!: FormGroup;
 
-  public autoFillForm(): void {
+  private autoFillForm(): void {
     this.form.patchValue({
       companyName: 'Bconnect Live Chat',
       telephoneNumber: '0612345678',
@@ -26,7 +26,7 @@ export class AutoFillButtonComponent {
     this.isAutoFilled = true;
   }
 
-  public clearForm(): void {
+  private clearForm(): void {
     this.form.reset();
     this.isAutoFilled = false;
   }
